@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro Love Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background-color: #feabd6;
+      color: #6760bd;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 40px;
+      margin-bottom: 15px;
+      color: #6760bd;
+      word-spacing: 15px;
+      letter-spacing: 8px;
+    }
+    #timer {
+      font-size: 50px;
+      color: #6760bd;
+      margin: 20px 0;
+      background-color: #fe65b7;
+      padding: 20px;
+      border-radius: 5px;
+      display: inline-block;
+      animation: pulse 1s infinite;
+      transition: all 0.3s ease;
+    }
+    button {
+      font-size: 15px;
+      font-family: 'Press Start 2P', cursive;
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #fe65b7;
+      color: #6760bd;
+      border: 2px solid #6760bd;
+      border-radius: 5px;
+      cursor: grabbing;
+    }
+    button:hover {
+      background-color: #fe65b7;
+    }
+    input {
+      font-size: 15px;
+      font-family: 'Press Start 2P', cursive;
+      color: #6760bd;
+      background-color: #fe65b7;
+      padding: 5px;
+      width: 60px;
+      text-align: center;
+      margin: 10px;
+      border: 2px solid #6760bd;
+      border-radius: 5px;
+    }
+    .love {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+    .reset-effect {
+      animation: shake 0.5s;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Risma's Pomodoro Timer</h1>
+  
+  <div>
+    <label>Minute: <input type="number" id="minutesInput" value="0" min="0"></label>
+    <label>Second: <input type="number" id="secondsInput" value="0" min="1" max="59"></label>
+  </div>
+
+  <div id="timer">25:00</div>
+  <div class="love"></div>
+
+  <div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+  
+  <p>Take a breath, you are right on time!</p>
+  
+  <script>
+    let minutes = 0;
+    let seconds = 0;
+    let timerInterval;
+    let isPaused = false;
+
+    function updateDisplay() {
+      const min = String(minutes).padStart(2, '0');
+      const sec = String(seconds).padStart(2, '0');
+      document.getElementById('timer').textContent = `${min}:${sec}`;
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      minutes = parseInt(document.getElementById('minutesInput').value);
+      seconds = parseInt(document.getElementById('secondsInput').value);
+      updateDisplay();
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          if (seconds === 0) {
+            if (minutes === 0) {
+              clearInterval(timerInterval);
+              alert("BREAK TIME ALERT!");
+              return;
+            }
+            minutes--;
+            seconds = 59;
+          } else {
+            seconds--;
+          }
+          updateDisplay();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isPaused = !isPaused;
+    }
+
+   function resetTimer() {
+     clearInterval(timerInterval);
+     timerInterval = null;
+     isPaused = false;
+     minutes = parseInt(document.getElementById('minutesInput').value);
+     seconds = parseInt(document.getElementById('secondsInput').value);
+  updateDisplay();
+
+  const timerEl = document.getElementById('timer');
+  timerEl.classList.add('reset-effect');
+  setTimeout(() => {
+    timerEl.classList.remove('reset-effect');
+  }, 500);
+}
+    updateDisplay();
+  </script>
+
+</body>
+</html>
